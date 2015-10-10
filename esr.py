@@ -1,10 +1,12 @@
 import configparser
 import sqlite3
 
+import os
 from os.path import join
 
 config = configparser.ConfigParser()
-config.read('settings.ini')
+module_path = os.path.dirname(__file__)
+config.read(join(module_path, 'settings.ini'))
 db_loc = join(config['DEFAULT']['db_dir'],
               config['DEFAULT']['db_filename'])
 use_mem = config['DEFAULT']['use_mem']
