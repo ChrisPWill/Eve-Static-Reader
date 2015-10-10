@@ -1,9 +1,14 @@
-def name_from_typeid(cursor, typeID):
-    return generic_query("invTypes", "typeName", "typeID", typeID)
+def from_typeid(cursor, typeID, colName):
+    (val,) = generic_query(cursor, "invTypes", colName, "typeID", typeID)
+    return val
 
 
-def vol_from_typeid(cursor, typeID):
-    return generic_query("invTypes", "volume", "typeID", typeID)
+def typename_from_typeid(cursor, typeID):
+    return from_typeid(cursor, typeID, "typeName")
+
+
+def volume_from_typeid(cursor, typeID):
+    return from_typeid(cursor, typeID, "volume")
 
 
 def generic_query(cursor, table, qcol, col, colval):
