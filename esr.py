@@ -5,13 +5,13 @@ from os.path import join
 
 
 class ESR:
-    def generic_query(self, table, c1, c1val, c2):
+    def generic_query(self, table, qcol, col, colval):
         cursor = self.__cursor()
-        query = "SELECT " + c2 + " FROM " + table + " WHERE " + c1 + "="
-        if isinstance(c1val, (str, bytes)):
-            query += "\"" + c1val + "\""
+        query = "SELECT " + qcol + " FROM " + table + " WHERE " + col + "="
+        if isinstance(colval, (str, bytes)):
+            query += "\"" + colval + "\""
         else:
-            query += str(c1val)
+            query += str(colval)
         query += ";"
         cursor.execute(query)
         return cursor.fetchall()
