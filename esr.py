@@ -5,7 +5,7 @@ from os.path import join
 
 
 class ESR:
-    def print_tables(self):
+    def printtables(self):
         cursor = self.conn.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
         print(cursor.fetchall())
