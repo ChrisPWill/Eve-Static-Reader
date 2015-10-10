@@ -5,10 +5,19 @@ from os.path import join
 
 
 class ESR:
+    def generic_query(self, table, c1, c1val, c2):
+        cursor = self.__cursor()
+        query = "SELECT " + c2 + " FROM " + table + " WHERE " + c1 + "="
+        if isinstance(c1val, (str, bytes)):
+            query += "\"" + c1val + "\""
+        else:
+            query += str(c1val)
+        query += ";"
+        cursor.execute(query)
+        return cursor.fetchall()
+
     def printtables(self):
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        print(cursor.fetchall())
+        print(self.__tablelist())
 
     def __init__(self):
         config = configparser.ConfigParser()
@@ -32,3 +41,14 @@ class ESR:
                 self.conn.executescript(query)
         else:
             self.conn = sqlite3.connect(db_loc)
+        self.table = {}
+        for table in self.__tablelist():
+            self.table[table] = True
+
+    def __cursor(self):
+        return self.conn.cursor()
+
+    def __tablelist(self):
+        cursor = self.__cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        return cursor.fetchall()
