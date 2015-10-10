@@ -5,6 +5,12 @@ from os.path import join
 
 
 class ESR:
+    def name_from_typeid(self, typeID):
+        return self.generic_query("invTypes", "typeName", "typeID", typeID)
+
+    def vol_from_typeid(self, typeID):
+        return self.generic_query("invTypes", "volume", "typeID", typeID)
+
     def generic_query(self, table, qcol, col, colval):
         cursor = self.__cursor()
         query = "SELECT " + qcol + " FROM " + table + " WHERE " + col + "="
