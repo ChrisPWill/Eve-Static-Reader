@@ -34,22 +34,16 @@ class ESR:
         if "yes" in use_mem:
             file_conn = sqlite3.connect(db_loc)
 
-            def tf(x): str(x, 'latin1')
+            def tf(x):
+                return str(x, 'utf-8', 'ignore')
 
             file_conn.text_factory = tf
             self.conn = sqlite3.connect(':memory:')
-            tables = config['DEFAULT']['db_tables'].split()
-            for table_name in tables:
-                for line in file_conn.iterdump():
-                    if table_name in line:
-                        query = line
-                        break
-                self.conn.executescript(query)
+
+            query = "".join(line for line in file_conn.iterdump())
+            self.conn.executescript(query)
         else:
             self.conn = sqlite3.connect(db_loc)
-        self.table = {}
-        for table in self.__tablelist():
-            self.table[table] = True
 
     def __cursor(self):
         return self.conn.cursor()
