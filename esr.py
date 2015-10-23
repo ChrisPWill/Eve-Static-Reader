@@ -1,15 +1,16 @@
-def from_typeid(cursor, typeID, colName):
-    (val,) = generic_query_fetchone(cursor, "invTypes", colName, "typeID",
+def from_typeid(cursor, typeID, colNameList):
+    colNames = ', '.join(colNameList)
+    (val,) = generic_query_fetchone(cursor, "invTypes", colNames, "typeID",
                                     typeID)
     return val
 
 
 def typename_from_typeid(cursor, typeID):
-    return from_typeid(cursor, typeID, "typeName")
+    return from_typeid(cursor, typeID, ['typeName'])
 
 
 def volume_from_typeid(cursor, typeID):
-    return from_typeid(cursor, typeID, "volume")
+    return from_typeid(cursor, typeID, ['volume'])
 
 
 def generic_query_fetchone(cursor, table, qcol, col, colval):
