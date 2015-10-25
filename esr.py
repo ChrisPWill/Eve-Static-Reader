@@ -20,19 +20,15 @@ def generic_query_cursor(cursor, table, qcol_list, col, optype, colval):
     return cursor
 
 
-def generic_query_fetchone(cursor, table, qcol_list, col, optype, colval):
+def generic_query_fetchone(cursor, table, qcol_list, col=None, optype=None,
+                           colval=None):
     return generic_query_cursor(
         cursor, table, qcol_list, col, optype, colval
     ).fetchone()
 
 
-def generic_query_sets(cursor, table, qcol_list, col, optype, colval, num):
-    cursor = generic_query_cursor(cursor, table, qcol_list, col, optype, colval)
-    cursor.arraysize = num
-    return cursor
-
-
-def generic_query_fetchall(cursor, table, qcol_list, col, optype, colval):
+def generic_query_fetchall(cursor, table, qcol_list, col=None, optype=None,
+                           colval=None):
     return generic_query_cursor(
         cursor, table, qcol_list, col, optype, colval
     ).fetchall()
