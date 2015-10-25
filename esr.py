@@ -7,10 +7,17 @@ def op_conv(optype, colval):
         return {'op': ' LIKE ', 'val': colval+'%'}
 
 
-def generic_query_cursor(cursor, table, qcol_list, col, optype, colval):
+def generic_query_cursor(cursor, table, qcol_list, col, optype, colval, n=None):
     conv = op_conv(optype, colval)
     qcols = ", ".join(qcol_list)
-    query = "SELECT " + qcols + " FROM " + table + " WHERE " + col + conv['op']
+    if n is not None:
+        top = "TOP " + str(n)
+    else:
+        top = ""
+    query = (
+        "SELECT " + top + qcols + " FROM " + table + " WHERE " + col +
+        conv['op']
+    )
     if isinstance(colval, (str, bytes)):
         query += "\"" + conv['val'] + "\""
     else:
@@ -24,6 +31,12 @@ def generic_query_fetchone(cursor, table, qcol_list, col, optype, colval):
     return generic_query_cursor(
         cursor, table, qcol_list, col, optype, colval
     ).fetchone()
+
+
+def generic_query_fetchn(cursor, table, qcol_list, col, optype, colval, n):
+    return generic_query_cursor(
+        cursor, table, qcol_list, col, optype, colval, n
+    ).fetchall()
 
 
 def generic_query_sets(cursor, table, qcol_list, col, optype, colval, num):
@@ -40,7 +53,7 @@ def generic_query_fetchall(cursor, table, qcol_list, col, optype, colval):
 
 def from_typeid(cursor, typeID, colNameList):
     (val,) = generic_query_fetchone(cursor, "invTypes", colNameList, "typeID",
-                                    typeID)
+                                    "eq", typeID)
     return val
 
 
